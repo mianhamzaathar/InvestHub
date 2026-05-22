@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}InvestHub | Smart Earning Platform{% endblock %}
+
+{% block hero %}
+<section class="landing-hero">
+  <div class="landing-orb orb-money"><i class="bi bi-currency-dollar"></i></div>
+  <div class="landing-orb orb-users"><i class="bi bi-people-fill"></i></div>
+  <div class="landing-orb orb-wallet"><i class="bi bi-wallet2"></i></div>
+  <div class="landing-orb orb-shield"><i class="bi bi-shield-fill-check"></i></div>
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-7">
+        <span class="hero-kicker"><i class="bi bi-graph-up-arrow"></i> Smart Earnings Platform</span>
+        <h1>Build your daily <span>earning system</span> with plans, tasks, referrals, and secure withdrawals.</h1>
+        <p>InvestHub is designed like a real reward ecosystem: users complete verified tasks, track wallet growth, invite referrals, claim bonuses, and withdraw with clear rules and fraud protection.</p>
+        <div class="landing-actions">
+          {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn custom-btn">Open Dashboard</a>
+            <a href="{% url 'rewards:tasks' %}" class="btn btn-outline-light">Start Tasks</a>
+          {% else %}
+            <a href="{% url 'register' %}" class="btn custom-btn">Join Now</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+          {% endif %}
+        </div>
+        <div class="landing-hero-points landing-trust-strip">
+          <span><i class="bi bi-check-circle"></i> Daily rewards</span>
+          <span><i class="bi bi-check-circle"></i> OTP withdrawals</span>
+          <span><i class="bi bi-check-circle"></i> Fraud checks</span>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="landing-dashboard-preview">
+          <h3>InvestHub Earnings</h3>
+          <div class="preview-grid">
+            <div class="preview-card chart-card">
+              <span>Today earned</span>
+              <strong>Rs. 1,240</strong>
+              <svg viewBox="0 0 240 70" aria-hidden="true">
+                <polyline points="8,52 38,48 70,54 102,38 132,25 164,34 196,42 232,12" fill="none" stroke="#26e6a4" stroke-width="4" stroke-linecap="round"/>
+                <g fill="#26e6a4"><circle cx="8" cy="52" r="4"/><circle cx="38" cy="48" r="4"/><circle cx="70" cy="54" r="4"/><circle cx="102" cy="38" r="4"/><circle cx="132" cy="25" r="4"/><circle cx="164" cy="34" r="4"/><circle cx="196" cy="42" r="4"/><circle cx="232" cy="12" r="4"/></g>
+              </svg>
+            </div>
+            <div class="preview-card wallet-card">
+              <span>Wallet Balance</span>
+              <strong>Rs. 24,680</strong>
+              <div class="mini-plan">
+                <small>Active Plan</small>
+                <b>Premium</b>
+                <i class="bi bi-wallet2"></i>
+              </div>
+            </div>
+            <div class="preview-card bars-card">
+              <span>Daily Profit</span>
+              <strong>Rs 850</strong>
+              <div class="bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+            </div>
+            <div class="preview-card status-card">
+              <span>Withdrawal status</span>
+              <strong>OTP verified</strong>
+              <i class="bi bi-check-lg"></i>
+            </div>
+          </div>
+          <div class="preview-card activity-card">
+            <span>Recent Activity</span>
+            <div><b><i class="bi bi-arrow-up-right"></i> Daily Bonus</b><strong>+ Rs. 50</strong></div>
+            <div><b><i class="bi bi-arrow-up-right"></i> Task Completed</b><strong>+ Rs. 120</strong></div>
+            <div><b><i class="bi bi-arrow-up-right"></i> Referral Bonus</b><strong>+ Rs. 200</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="landing-sections">
+  <section class="container landing-overview">
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="landing-metric"><span>Task Types</span><strong>6+</strong><p>Ads, surveys, app installs, offerwalls, referrals, and login bonuses.</p></div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="landing-metric"><span>Wallet Flow</span><strong>OTP</strong><p>Withdrawals use request history, pending states, and verification.</p></div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="landing-metric"><span>Referral Levels</span><strong>3</strong><p>Affiliate-style commissions for growing the platform responsibly.</p></div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="landing-metric"><span>Security</span><strong>Live</strong><p>Timer validation, shared device checks, and suspicious activity signals.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container landing-split">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <img src="{% static 'moderna/img/about.jpg' %}" alt="Earning analytics workspace" class="landing-photo">
+      </div>
+      <div class="col-lg-6">
+        <span class="landing-eyebrow">Why InvestHub</span>
+        <h2>A cleaner alternative to random “watch ads and earn” pages.</h2>
+        <p>Users need trust before they spend time on an earning platform. InvestHub shows earning rules, wallet history, task limits, referrals, and withdrawal states clearly so the platform feels professional instead of risky.</p>
+        <div class="landing-checks">
+          <div><i class="bi bi-check2-circle"></i><span>Transparent daily earning rules and task limits</span></div>
+          <div><i class="bi bi-check2-circle"></i><span>Membership plans for higher limits and faster workflows</span></div>
+          <div><i class="bi bi-check2-circle"></i><span>Admin controls for tasks, fraud signals, campaigns, and withdrawals</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="landing-section-title">
+      <span>Core Modules</span>
+      <h2>Everything needed for a scalable rewards platform</h2>
+    </div>
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-list-check"></i>
+          <h4>Daily Task System</h4>
+          <p>Login bonuses, timed tasks, proof submission, task limits, and admin review options keep earning structured.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-wallet2"></i>
+          <h4>Wallet & Withdrawals</h4>
+          <p>Credits, debits, transaction history, OTP verification, JazzCash/Easypaisa-ready method fields, and pending approval flow.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-diagram-3"></i>
+          <h4>Referral Engine</h4>
+          <p>Unique referral codes, direct referral tracking, and level commissions for an affiliate-style earning layer.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-shield-lock"></i>
+          <h4>Anti-Fraud Signals</h4>
+          <p>Timer validation, suspicious user agents, duplicate device checks, shared IP monitoring, and velocity scans.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-megaphone"></i>
+          <h4>Advertiser Panel</h4>
+          <p>Businesses can request campaigns, create funding invoices, define action rewards, and track budget spend.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="landing-feature large">
+          <i class="bi bi-phone"></i>
+          <h4>PWA & API Ready</h4>
+          <p>Manifest, service worker, device tokens, and versioned API endpoints prepare the platform for a mobile app later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-image-band">
+    <div class="container">
+      <div class="row gy-4 align-items-center">
+        <div class="col-lg-5">
+          <span class="landing-eyebrow">User Journey</span>
+          <h2>From signup to withdrawal, every step is clear.</h2>
+          <p>Create an account, complete daily tasks, grow through referrals, claim bonuses, and submit withdrawals with OTP verification.</p>
+        </div>
+        <div class="col-lg-7">
+          <div class="landing-steps">
+            <div><b>01</b><strong>Register</strong><span>Create account with username and phone.</span></div>
+            <div><b>02</b><strong>Earn</strong><span>Complete tasks, spin rewards, and login daily.</span></div>
+            <div><b>03</b><strong>Refer</strong><span>Share invite links and earn commissions.</span></div>
+            <div><b>04</b><strong>Withdraw</strong><span>Submit wallet withdrawal with OTP security.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container landing-split">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6 order-lg-2">
+        <img src="{% static 'investhub/investhub-plans.jpg' %}" alt="Investment plans and wallet" class="landing-photo">
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <span class="landing-eyebrow">For growth</span>
+        <h2>Premium plans, gamification, analytics, and campaigns are already connected.</h2>
+        <p>The platform is ready to grow beyond basic ads into micro-tasks, offerwalls, surveys, sponsor campaigns, and advertiser-funded actions.</p>
+        <div class="landing-mini-grid">
+          <div><i class="bi bi-stars"></i><strong>Membership</strong><span>Higher limits and bonuses</span></div>
+          <div><i class="bi bi-trophy"></i><strong>Gamification</strong><span>Spin, streaks, rewards</span></div>
+          <div><i class="bi bi-bar-chart"></i><strong>Analytics</strong><span>Reports and fraud stats</span></div>
+          <div><i class="bi bi-broadcast"></i><strong>Campaigns</strong><span>Advertiser revenue layer</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="landing-band">
+      <div>
+        <span>Built for real monetization</span>
+        <h2>Start with clear earning rules, then connect real gateways, offerwalls, and advertiser budgets.</h2>
+      </div>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn custom-btn">Go to Dashboard</a>
+      {% else %}
+        <a href="{% url 'register' %}" class="btn custom-btn">Create Account</a>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

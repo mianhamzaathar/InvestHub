@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Referrals | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero" style="background-image: linear-gradient(90deg, rgba(23, 32, 50, 0.92), rgba(42, 48, 72, 0.66)), url('/static/investhub/investhub-plans.jpg');">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-share-alt"></i> Affiliate System</span>
+    <h1 class="mb-3">Referral Dashboard</h1>
+    <p class="mb-0">Share your invite link and earn multi-level commissions from eligible activity.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body p-4">
+          <h3>Your Invite Link</h3>
+          <p>Referral code: <strong>{{ profile.code }}</strong></p>
+          <input class="form-control mb-3" value="{{ invite_url }}" readonly>
+          <p>Total commission: <strong>Rs. {{ total_commission }}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card mb-4">
+        <div class="card-header"><h4 class="mb-0">Direct Referrals</h4></div>
+        <div class="card-body">
+          {% for user in direct_referrals %}
+            <div class="d-flex justify-content-between border-bottom py-2"><span>{{ user.username }}</span><small>{{ user.date_joined|date:"M d, Y" }}</small></div>
+          {% empty %}
+            <p>No referrals yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h4 class="mb-0">Commission History</h4></div>
+        <div class="card-body">
+          {% for item in commissions %}
+            <div class="d-flex justify-content-between border-bottom py-2"><span>Level {{ item.level }} - {{ item.referred_user.username }}</span><strong>Rs. {{ item.amount }}</strong></div>
+          {% empty %}
+            <p>No commissions yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

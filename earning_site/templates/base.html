@@ -1,0 +1,155 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="InvestHub - smart investment and daily earning platform">
+  <title>{% block title %}InvestHub{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="{% static 'moderna/img/favicon.png' %}">
+  <link href="{% static 'moderna/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'moderna/investhub-moderna.css' %}?v=investhub-dashboard-logo" rel="stylesheet">
+  <link rel="manifest" href="{% url 'manifest' %}">
+  <meta name="theme-color" content="#1e4356">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="index-page">
+  {% block header %}
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="{% url 'root_redirect' %}" class="logo d-flex align-items-center">
+        <img src="{% static 'investhub/investhub-logo.svg' %}" alt="InvestHub" class="ih-logo-img">
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'rewards:tasks' %}">Tasks</a></li>
+            <li><a href="{% url 'plans:plans' %}">Plans</a></li>
+            <li><a href="{% url 'rewards:referrals' %}">Referrals</a></li>
+            <li><a href="{% url 'rewards:spin' %}">Spin</a></li>
+            <li><a href="{% url 'withdraw' %}">Wallet</a></li>
+            <li><a href="{% url 'rewards:advertiser_panel' %}">Advertise</a></li>
+            {% if user.is_staff %}<li><a href="{% url 'rewards:analytics_dashboard' %}">Analytics</a></li>{% endif %}
+          {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'rewards:legal' 'earning-rules' %}">Rules</a></li>
+          {% endif %}
+          <li class="nav-cta">
+            {% if user.is_authenticated %}
+              <a href="{% url 'logout' %}" class="btn-get-started">Logout</a>
+            {% else %}
+              <a href="{% url 'register' %}" class="btn-get-started">Join Now</a>
+            {% endif %}
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+  {% endblock %}
+
+  <main class="main {% block main_class %}{% endblock %}">
+    {% block hero %}{% endblock %}
+
+    {% if messages %}
+      <div class="container mt-4">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <section class="app-main app-content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+
+  {% block footer %}
+  {% if request.path == '/' %}
+  <footer id="footer" class="footer light-background">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="{% url 'root_redirect' %}" class="logo d-flex align-items-center">
+            <img src="{% static 'investhub/investhub-logo.svg' %}" alt="InvestHub" class="ih-footer-logo">
+          </a>
+          <p>Your investment plans, wallet balance, ad earnings, referrals, and withdrawals in one clean dashboard.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="#"><i class="bi bi-shield-check"></i></a>
+            <a href="#"><i class="bi bi-wallet2"></i></a>
+            <a href="#"><i class="bi bi-graph-up-arrow"></i></a>
+            <a href="#"><i class="bi bi-phone"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6 footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'rewards:tasks' %}">Daily Tasks</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'plans:plans' %}">Plans</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'withdraw' %}">Wallet</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-6 footer-links">
+          <h4>Trust & Account</h4>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'login' %}">Login</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'rewards:legal' 'earning-rules' %}">Earning Rules</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'rewards:legal' 'terms' %}">Terms</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="{% url 'rewards:legal' 'privacy' %}">Privacy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">InvestHub</strong> <span>All Rights Reserved</span></p>
+    </div>
+  </footer>
+  {% endif %}
+  {% endblock %}
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <script src="{% static 'moderna/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'moderna/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'moderna/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'moderna/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'moderna/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'moderna/vendor/waypoints/noframework.waypoints.js' %}"></script>
+  <script src="{% static 'moderna/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'moderna/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'moderna/js/main.js' %}"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register("{% url 'service_worker' %}").catch(function () {});
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

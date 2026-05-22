@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Analytics | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero" style="background-image: linear-gradient(90deg, rgba(13, 27, 42, .92), rgba(26, 47, 75, .66)), url('/static/vaultedge/img/bg-img/5.jpg');">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-area-chart"></i> Analytics</span>
+    <h1>Platform Health Dashboard</h1>
+    <p>Daily tasks, withdrawals, fraud signals, and operating metrics.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-body p-4">
+      <canvas id="platformChart" height="110"></canvas>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ series|json_script:"analytics-series" }}
+<script>
+  const series = JSON.parse(document.getElementById('analytics-series').textContent);
+  const ctx = document.getElementById('platformChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: series.map(item => item.label),
+      datasets: [
+        { label: 'Tasks', data: series.map(item => item.tasks), borderColor: '#d4a017', tension: .35 },
+        { label: 'Withdrawals', data: series.map(item => item.withdrawals), borderColor: '#0e9c7f', tension: .35 },
+        { label: 'Fraud', data: series.map(item => item.fraud), borderColor: '#d9534f', tension: .35 }
+      ]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Wallet | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero" style="background-image: linear-gradient(90deg, rgba(23, 32, 50, 0.92), rgba(42, 48, 72, 0.66)), url('/static/investhub/investhub-dashboard.jpg');">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-wallet"></i> Wallet</span>
+    <h1 class="mb-3">Wallet & Withdrawals</h1>
+    <p class="mb-0">Track every credit/debit and submit JazzCash, Easypaisa, or bank withdrawal requests.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body p-4 p-lg-5">
+          <div class="brand-mark mb-3">Rs</div>
+          <h3>Rs. {{ wallet.balance|floatformat:2 }}</h3>
+          <p>Available balance</p>
+          <form method="post" class="custom-form">
+            {% csrf_token %}
+            <label class="form-label">Amount</label>
+            <input class="form-control" name="amount" type="number" step="0.01" min="1" required>
+            <label class="form-label">Method</label>
+            <select class="form-select" name="method" required>
+              <option>JazzCash</option>
+              <option>EasyPaisa</option>
+              <option>Bank</option>
+            </select>
+            <label class="form-label">Account Number</label>
+            <input class="form-control" name="account_number" placeholder="03XXXXXXXXX or IBAN" required>
+            <label class="form-label">Account Title</label>
+            <input class="form-control" name="account_title" placeholder="Your account title" required>
+            <label class="form-label">Withdrawal OTP</label>
+            <input class="form-control" name="otp_code" placeholder="Submit once to generate OTP, then enter it here">
+            <button class="form-control mt-2" type="submit">Request Withdrawal</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card mb-4">
+        <div class="card-header"><h4 class="mb-0">Withdrawal History</h4></div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead><tr><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody>
+              {% for item in withdrawals %}
+                <tr><td>Rs. {{ item.amount }}</td><td>{{ item.method }}</td><td>{{ item.status|title }}</td><td>{{ item.created_at|date:"M d, Y" }}</td></tr>
+              {% empty %}
+                <tr><td colspan="4">No withdrawals yet.</td></tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h4 class="mb-0">Recent Transactions</h4></div>
+        <div class="card-body">
+          {% for tx in transactions %}
+            <div class="d-flex justify-content-between border-bottom py-2">
+              <div><strong>{{ tx.source|title }}</strong><br><small>{{ tx.description }}</small></div>
+              <div class="{% if tx.transaction_type == 'credit' %}text-success{% else %}text-danger{% endif %}">
+                {% if tx.transaction_type == 'credit' %}+{% else %}-{% endif %}Rs. {{ tx.amount }}
+              </div>
+            </div>
+          {% empty %}
+            <p>No transactions yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

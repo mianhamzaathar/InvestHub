@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Activate Plan{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero" style="background-image: linear-gradient(90deg, rgba(23, 32, 50, 0.92), rgba(42, 48, 72, 0.66)), url('/static/investhub/investhub-plans.jpg');">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-shield-alt"></i> Secure OTP Activation</span>
+    <h1 class="mb-3">Activate {{ plan.name }}</h1>
+    <p class="mb-0">Confirm your payment method and phone number to continue with OTP verification.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body p-4 p-lg-5">
+          <div class="text-center mb-4">
+            <div class="brand-mark mx-auto mb-3">OTP</div>
+            <h3>Activate <strong>{{ plan.name }}</strong></h3>
+            <p class="mb-0">Plan price: Rs. {{ plan.price }}</p>
+          </div>
+
+          <form method="post" action="{% url 'payments:initiate_payment' plan.id %}" class="custom-form">
+            {% csrf_token %}
+            <input type="hidden" name="plan_id" value="{{ plan.id }}">
+
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="text" class="form-control" name="phone" placeholder="03XXXXXXXXX" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Payment Method</label>
+              <select class="form-select" name="method" required>
+                <option value="">-- Select --</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="EasyPaisa">EasyPaisa</option>
+              </select>
+            </div>
+
+            <button type="submit" class="form-control">Send OTP & Continue</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

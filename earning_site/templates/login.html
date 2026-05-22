@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login | InvestHub{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero auth-hero" style="background-image: linear-gradient(135deg, rgba(30, 67, 86, 0.94), rgba(104, 164, 196, 0.72)), url('{% static 'investhub/investhub-dashboard.jpg' %}');">
+  <div class="container">
+    <span class="hero-kicker"><i class="bi bi-shield-lock"></i> Secure Access</span>
+    <h1 class="mb-3">Welcome Back to InvestHub</h1>
+    <p class="mb-0">Sign in with your username or phone number to manage earnings, plans, referrals, and wallet activity.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center g-4 align-items-stretch auth-shell">
+    <div class="col-lg-5 col-xl-4">
+      <div class="card auth-panel h-100">
+        <div class="card-body p-4 p-lg-5">
+          <div class="auth-icon mb-4"><i class="bi bi-person-check"></i></div>
+          <h3 class="mb-2">Account Login</h3>
+          <p class="text-muted mb-4">Continue to your rewards dashboard.</p>
+
+          <form method="post" class="custom-form" id="loginForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label" for="username">Username or Phone</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Enter username or phone" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="password">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
+                <button type="button" id="passwordToggle" class="btn btn-outline-secondary auth-toggle" aria-label="Show password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4 auth-options">
+              <div class="form-check">
+                <input type="checkbox" id="remember" class="form-check-input">
+                <label for="remember" class="form-check-label">Remember me</label>
+              </div>
+              <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn custom-btn w-100 py-3">Login to Dashboard</button>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="mb-0">New here? <a href="{% url 'register' %}"><strong>Create an account</strong></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-xl-5">
+      <div class="auth-feature h-100">
+        <div>
+          <span class="auth-feature-kicker">Smart earning workspace</span>
+          <h3>Plans, rewards, referrals, and withdrawals in one protected account.</h3>
+        </div>
+        <div class="auth-feature-grid">
+          <div><i class="bi bi-wallet2"></i><strong>Wallet</strong><span>Track balance and withdrawals</span></div>
+          <div><i class="bi bi-gift"></i><strong>Rewards</strong><span>Daily tasks and streaks</span></div>
+          <div><i class="bi bi-diagram-3"></i><strong>Referral</strong><span>Multi-level commissions</span></div>
+          <div><i class="bi bi-shield-check"></i><strong>Security</strong><span>Fraud and OTP checks</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const password = document.getElementById('password');
+    const toggle = document.getElementById('passwordToggle');
+    const username = document.getElementById('username');
+    const remember = document.getElementById('remember');
+
+    const savedUsername = localStorage.getItem('rememberedUsername');
+    if (savedUsername) {
+      username.value = savedUsername;
+      remember.checked = true;
+    }
+
+    remember.addEventListener('change', function () {
+      if (this.checked && username.value.trim()) {
+        localStorage.setItem('rememberedUsername', username.value.trim());
+      } else {
+        localStorage.removeItem('rememberedUsername');
+      }
+    });
+
+    toggle.addEventListener('click', function () {
+      const show = password.type === 'password';
+      password.type = show ? 'text' : 'password';
+      this.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+
+    username.focus();
+  });
+</script>
+{% endblock %}

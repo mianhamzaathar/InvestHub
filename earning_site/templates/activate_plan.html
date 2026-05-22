@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Activate Plan - {{ plan.name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h4 class="my-1 text-center">Activate Plan</h4>
+        </div>
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h3 class="mb-3">{{ plan.name }}</h3>
+            <div class="display-4 text-dark mb-2">Rs {{ plan.price }}</div>
+            {% if plan.duration %}
+            <p class="text-muted">{{ plan.duration }} days validity</p>
+            {% endif %}
+          </div>
+
+          <div class="plan-features mb-4">
+            {% if plan.features %}
+            <ul class="list-group list-group-flush mb-3">
+              {% for feature in plan.features %}
+              <li class="list-group-item d-flex align-items-center">
+                <span class="me-2 text-success">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                  </svg>
+                </span>
+                {{ feature }}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+              <span class="d-flex align-items-center justify-content-center">
+                <span class="me-2">Generate OTP & Pay</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                </svg>
+              </span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Activate Plan: {{ plan.name }}</h2>
+    <p class="text-center text-muted">Price: Rs. {{ plan.price }}</p>
+
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_method"><strong>Select Payment Method</strong></label><br>
+            {{ form.method }}
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="id_phone_number"><strong>Phone Number</strong></label>
+            {{ form.phone_number }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Send OTP</button>
+    </form>
+</div>
+{% endblock %}

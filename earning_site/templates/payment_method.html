@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Select Payment Method{% endblock %}
+{% block content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0 rounded p-4">
+        <h3 class="text-center mb-4 text-primary fw-bold">💳 Select Payment Method</h3>
+
+        {% if error %}
+        <div class="alert alert-danger text-center">
+          <i class="fa fa-exclamation-triangle me-2"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <!-- Phone Number -->
+          <div class="mb-3">
+            <label for="phone" class="form-label fw-semibold">Your Mobile Number</label>
+            <input type="text" name="phone" id="phone" class="form-control" placeholder="03XXXXXXXXX" required>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Choose Payment Method</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="method" id="jazzcash" value="JazzCash" required>
+              <label class="form-check-label" for="jazzcash">
+                <i class="fa fa-mobile-alt text-danger me-1"></i> JazzCash
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="method" id="easypaisa" value="EasyPaisa">
+              <label class="form-check-label" for="easypaisa">
+                <i class="fa fa-mobile-alt text-success me-1"></i> EasyPaisa
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-success w-100 py-2 mt-3">
+            <i class="fa fa-paper-plane me-1"></i> Proceed to OTP Verification
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional Styling -->
+<style>
+input[type="text"]#phone {
+  font-size: 1.1rem;
+}
+</style>
+
+{% endblock %}

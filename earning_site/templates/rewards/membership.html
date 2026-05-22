@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Membership | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-star"></i> Membership Plans</span>
+    <h1 class="mb-3">Free & Premium Earning</h1>
+    <p class="mb-0">Premium users can receive higher daily bonuses, more tasks, and faster withdrawal review.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    {% for plan in plans %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card plan-card h-100">
+          <div class="card-body p-4">
+            <h3>{{ plan.name }}</h3>
+            <p class="display-6">Rs. {{ plan.price }}</p>
+            <ul class="list-unstyled">
+              <li><i class="fa fa-check-circle text-success me-2"></i>Daily bonus Rs. {{ plan.daily_bonus }}</li>
+              <li><i class="fa fa-check-circle text-success me-2"></i>{{ plan.task_multiplier }}x task rewards</li>
+              <li><i class="fa fa-check-circle text-success me-2"></i>{{ plan.max_daily_tasks }} daily tasks</li>
+              <li><i class="fa fa-check-circle text-success me-2"></i>{% if plan.faster_withdrawals %}Faster withdrawals{% else %}Standard withdrawals{% endif %}</li>
+            </ul>
+            <form method="post">
+              {% csrf_token %}
+              <input type="hidden" name="plan_id" value="{{ plan.id }}">
+              <button class="btn custom-btn w-100" type="submit">Activate</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-info">No membership plans configured yet.</div></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

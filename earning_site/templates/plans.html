@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block title %}Available Plans{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero" style="background-image: linear-gradient(90deg, rgba(23, 32, 50, 0.92), rgba(42, 48, 72, 0.66)), url('/static/investhub/investhub-plans.jpg');">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-wallet"></i> Investment Plans</span>
+    <h1 class="mb-3">Choose Your Earning Plan</h1>
+    <p class="mb-0">Activate a plan with OTP, track daily earning, and keep your wallet growth visible from the dashboard.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h2>Available Packages</h2>
+        <p>Select the plan that fits your earning goal.</p>
+
+        <div class="section-bg rounded-pill px-4 py-2 d-inline-block shadow-sm">
+            <i class="fa fa-wallet text-primary me-2"></i>
+            Wallet Balance: <strong>Rs. {{ wallet.balance|default:"0.00" }}</strong>
+        </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="row g-4">
+        {% for plan in plans %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card position-relative plan-card">
+                {% if plan.is_popular %}
+                <div class="popular-badge text-white">Most Popular</div>
+                {% endif %}
+
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="text-center mb-4">
+                        <div class="brand-mark mx-auto mb-3">Rs</div>
+                        <h4 class="fw-bold">{{ plan.name }}</h4>
+                    </div>
+                    <div class="text-center mb-3">
+                        <span class="h5">Rs.</span>
+                        <span class="display-5 fw-bold">{{ plan.price }}</span>
+                        <small class="text-muted">/ {{ plan.duration_days }} days</small>
+                    </div>
+
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="fa fa-check-circle text-success me-2"></i>Daily earning: Rs. {{ plan.daily_earning }}</li>
+                        <li><i class="fa fa-check-circle text-success me-2"></i>Duration: {{ plan.duration_days }} days</li>
+                        <li><i class="fa fa-check-circle text-success me-2"></i>ROI: {{ plan.roi_percentage|default:"0" }}%</li>
+                        {% for feature in plan.features.all %}
+                        <li><i class="fa fa-check-circle text-success me-2"></i>{{ feature.description }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <button 
+                        class="btn custom-btn mt-auto" 
+                        data-bs-toggle="modal"
+                        data-bs-target="#paymentModal"
+                        data-plan-id="{{ plan.id }}" 
+                        data-plan-name="{{ plan.name }}"
+                        data-plan-price="{{ plan.price }}">
+                        Activate with OTP
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <div class="alert alert-info">No plans available.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form method="POST" id="paymentForm">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalLabel">Activate Plan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" name="plan_id" id="modalPlanId">
+          
+          <div class="mb-3">
+            <label class="form-label">Plan</label>
+            <input type="text" class="form-control" id="modalPlanName" readonly>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Payment Method</label>
+            <select class="form-select" name="method" required>
+              <option value="">-- Select --</option>
+              <option value="JazzCash">JazzCash</option>
+              <option value="EasyPaisa">EasyPaisa</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" name="phone" class="form-control" placeholder="03XXXXXXXXX" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary w-100">Send OTP & Activate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+.popular-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    z-index: 1;
+}
+</style>
+
+<!-- JavaScript to fill modal and update form action -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const paymentModal = document.getElementById('paymentModal');
+    const form = document.getElementById('paymentForm');
+
+    paymentModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const planId = button.getAttribute('data-plan-id');
+        const planName = button.getAttribute('data-plan-name');
+        const planPrice = button.getAttribute('data-plan-price');
+
+        document.getElementById('modalPlanId').value = planId;
+        document.getElementById('modalPlanName').value = `${planName} (Rs. ${planPrice})`;
+
+        // Dynamically set form action with plan ID
+        form.action = `/payment/plans/initiate/${planId}/`;
+    });
+});
+</script>
+
+{% endblock %}

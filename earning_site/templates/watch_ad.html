@@ -1,0 +1,22 @@
+<!-- watch_ad.html -->
+{% extends "base.html" %}
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center">🎥 Watch Ad</h2>
+    
+    {% if msg %}
+      <div class="alert alert-info text-center">{{ msg }}</div>
+    {% elif ad %}
+      <div class="text-center">
+        <h4>{{ ad.title }}</h4>
+        <iframe width="560" height="315" src="{{ ad.video_url }}" frameborder="0" allowfullscreen></iframe>
+        <form method="POST">
+          {% csrf_token %}
+          <button class="btn btn-success mt-3">✅ Mark as Watched</button>
+        </form>
+      </div>
+    {% else %}
+      <p class="text-danger">No ad available for this plan.</p>
+    {% endif %}
+  </div>
+{% endblock %}

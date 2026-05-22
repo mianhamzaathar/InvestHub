@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Admin Analytics | InvestHub{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4">Admin Analytics</h1>
+  <div class="row g-4 mb-4">
+    <div class="col-md-3"><div class="card stat-card blue"><div class="card-body"><h6>Total Wallet</h6><h3>Rs. {{ total_wallet_balance }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card orange"><div class="card-body"><h6>Pending Withdrawals</h6><h3>{{ pending_withdrawals }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card green"><div class="card-body"><h6>Approved Paid</h6><h3>Rs. {{ approved_withdrawals }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card purple"><div class="card-body"><h6>High Fraud Flags</h6><h3>{{ fraud_high }}</h3></div></div></div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card"><div class="card-header"><h4>Top Tasks</h4></div><div class="card-body">
+        {% for task in top_tasks %}<div class="d-flex justify-content-between border-bottom py-2"><span>{{ task.title }}</span><strong>{{ task.total }}</strong></div>{% empty %}<p>No task data.</p>{% endfor %}
+      </div></div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card"><div class="card-header"><h4>Open Fraud Signals</h4></div><div class="card-body">
+        {% for signal in recent_fraud %}<div class="border-bottom py-2"><strong>{{ signal.user.username }}</strong> - {{ signal.signal_type }} <span class="badge bg-primary">{{ signal.severity }}</span><br><small>{{ signal.details }}</small></div>{% empty %}<p>No open fraud signals.</p>{% endfor %}
+      </div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

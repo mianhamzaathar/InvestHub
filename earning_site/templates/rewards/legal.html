@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero legal-hero">
+  <div class="container">
+    {% if page == 'earning-rules' %}
+      <span class="hero-kicker"><i class="bi bi-shield-check"></i> Platform Trust</span>
+      <h1 class="mb-3">Earning Rules</h1>
+      <p class="mb-0">Clear rules protect real users, advertisers, payment providers, and the InvestHub reward system.</p>
+    {% else %}
+      <span class="hero-kicker"><i class="bi bi-file-earmark-text"></i> Legal</span>
+      <h1 class="mb-3">{{ title }}</h1>
+      <p class="mb-0">Important account, privacy, and platform usage information.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+{% if page == 'earning-rules' %}
+<div class="container legal-page">
+  <div class="legal-summary">
+    <div>
+      <span>Important</span>
+      <h2>Earnings are rewards for valid platform activity, not guaranteed income.</h2>
+      <p>InvestHub can approve, reject, limit, hold, or reverse rewards if activity breaks rules, looks automated, abuses ads/offerwalls, or violates payment/ad-network compliance.</p>
+    </div>
+    <a href="{% url 'register' %}" class="btn custom-btn">Create Account</a>
+  </div>
+
+  <div class="row gy-4 mt-4">
+    <div class="col-lg-4 col-md-6">
+      <div class="legal-rule-card">
+        <i class="bi bi-person-check"></i>
+        <h4>One Real Account</h4>
+        <p>Use one account per person/device unless admin approval is given. Duplicate accounts can be suspended and payouts can be blocked.</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="legal-rule-card">
+        <i class="bi bi-stopwatch"></i>
+        <h4>Complete Tasks Honestly</h4>
+        <p>Timed tasks, proof fields, daily limits, and review status must be respected. Submitting fake proof or skipping timers may trigger fraud signals.</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="legal-rule-card">
+        <i class="bi bi-wallet2"></i>
+        <h4>Withdrawals Need Review</h4>
+        <p>Withdrawals require correct account details, OTP flow, and admin review. Pending requests are not final approved payments.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="legal-grid mt-5">
+    <div class="legal-panel">
+      <h3>Allowed Earning Activities</h3>
+      <ul>
+        <li><i class="bi bi-check-circle"></i> Daily login bonus and streak rewards.</li>
+        <li><i class="bi bi-check-circle"></i> Valid ad/task completion with required timer.</li>
+        <li><i class="bi bi-check-circle"></i> Offerwall, survey, and app install tasks when verified.</li>
+        <li><i class="bi bi-check-circle"></i> Referral commissions from real invited users.</li>
+        <li><i class="bi bi-check-circle"></i> Spin rewards and membership bonuses within platform limits.</li>
+      </ul>
+    </div>
+
+    <div class="legal-panel danger">
+      <h3>Not Allowed</h3>
+      <ul>
+        <li><i class="bi bi-x-circle"></i> Fake clicks, bots, scripts, auto-refresh, or click farms.</li>
+        <li><i class="bi bi-x-circle"></i> VPN/proxy abuse or hiding location/device identity.</li>
+        <li><i class="bi bi-x-circle"></i> Multiple accounts for the same person, device, or payout account.</li>
+        <li><i class="bi bi-x-circle"></i> Fake screenshots, false app install proof, or copied survey proof.</li>
+        <li><i class="bi bi-x-circle"></i> Asking others to click ads in a way that violates ad-network rules.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="legal-timeline mt-5">
+    <div class="legal-section-title">
+      <span>How Rewards Move</span>
+      <h2>Reward status flow</h2>
+    </div>
+    <div class="row gy-4">
+      <div class="col-lg-3 col-md-6"><div><b>01</b><strong>Task submitted</strong><span>User completes a task with timer/proof.</span></div></div>
+      <div class="col-lg-3 col-md-6"><div><b>02</b><strong>System checks</strong><span>Daily limit, device, IP, and suspicious activity checks run.</span></div></div>
+      <div class="col-lg-3 col-md-6"><div><b>03</b><strong>Wallet credit</strong><span>Approved reward is added to wallet transaction history.</span></div></div>
+      <div class="col-lg-3 col-md-6"><div><b>04</b><strong>Withdrawal review</strong><span>Admin verifies request before final payout.</span></div></div>
+    </div>
+  </div>
+
+  <div class="legal-note mt-5">
+    <i class="bi bi-info-circle"></i>
+    <div>
+      <h4>Fair Use Note</h4>
+      <p>Rules can change when payment gateways, advertiser requirements, ad networks, offerwall providers, or anti-fraud policies change. The goal is to keep the platform safe, transparent, and usable for genuine users.</p>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="container legal-page">
+  <div class="card legal-simple-card">
+    <div class="card-body p-4 p-lg-5">
+      <h1>{{ title }}</h1>
+      {% if page == 'privacy' %}
+        <p>We store account, wallet, referral, task, IP/device risk, and payment request data to operate the platform safely.</p>
+      {% elif page == 'withdrawal-proof' %}
+        <p>Withdrawal statuses are visible in the wallet page. Approved withdrawals should be backed by admin payment records.</p>
+      {% else %}
+        <p>Use InvestHub honestly. Do not abuse tasks, referrals, ads, offerwalls, or withdrawal systems. Platform rules can change to meet ad-network and payment-provider compliance.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

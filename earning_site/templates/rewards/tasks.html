@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Daily Tasks | InvestHub{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero">
+  <div class="container">
+    <span class="hero-kicker"><i class="fa fa-check-circle"></i> Daily Tasks</span>
+    <h1 class="mb-3">Earn From Daily Tasks</h1>
+    <p class="mb-0">Claim login bonus, complete surveys, offerwalls, app installs, referral tasks, and validated ad tasks.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row g-4 mb-4">
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-body p-4">
+          <div class="brand-mark mb-3">+Rs</div>
+          <h3>Rs. {{ total_today }}</h3>
+          <p>Approved earnings today</p>
+          <a class="btn custom-btn" href="{% url 'rewards:claim_login_bonus' %}">Claim Login Bonus</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-body p-4">
+          <h4>Anti-Fraud Rules</h4>
+          <p class="mb-0">Rewards are validated by task timer, daily limit, IP/device signals, and admin review when needed. Fake clicks, VPN abuse, and duplicate accounts can be flagged.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for task in tasks %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body p-4 d-flex flex-column">
+            <span class="badge bg-primary align-self-start mb-3">{{ task.get_task_type_display }}</span>
+            <h4>{{ task.title }}</h4>
+            <p>{{ task.instructions|default:"Complete this task honestly to earn the reward." }}</p>
+            <ul class="list-unstyled">
+              <li><i class="fa fa-check-circle text-success me-2"></i>Reward: Rs. {{ task.reward_amount }}</li>
+              <li><i class="fa fa-clock text-primary me-2"></i>Timer: {{ task.duration_seconds }}s</li>
+              <li><i class="fa fa-shield-alt text-primary me-2"></i>Daily limit: {{ task.daily_limit }}</li>
+            </ul>
+            {% if task.external_url %}
+              <a class="mb-3" href="{{ task.external_url }}" target="_blank" rel="noopener">Open task source</a>
+            {% endif %}
+            <form method="post" action="{% url 'rewards:complete_task' task.id %}" class="mt-auto">
+              {% csrf_token %}
+              <input type="hidden" name="timer_seconds" value="{{ task.duration_seconds }}">
+              <input class="form-control mb-2" name="proof" placeholder="Proof / note (optional)">
+              <button class="btn custom-btn w-100" type="submit">Mark Complete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-info">No active tasks yet. Admin can add tasks from dashboard.</div></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

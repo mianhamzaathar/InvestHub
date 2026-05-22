@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard | InvestHub{% endblock %}
+
+{% block header %}{% endblock %}
+{% block main_class %}dashboard-main{% endblock %}
+{% block hero %}{% endblock %}
+
+{% block content %}
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <div class="dash-brand">
+      <a href="{% url 'dashboard' %}">
+        <img src="{% static 'investhub/investhub-logo.svg' %}" alt="InvestHub">
+      </a>
+    </div>
+
+    <p class="dash-menu-label">Menu</p>
+    <nav class="dash-side-nav">
+      <a class="active" href="{% url 'dashboard' %}"><i class="bi bi-grid-fill"></i> Dashboard</a>
+      <a href="{% url 'rewards:tasks' %}"><i class="bi bi-list-check"></i> Tasks <small>Daily</small></a>
+      <a href="{% url 'plans:plans' %}"><i class="bi bi-wallet2"></i> Plans</a>
+      <a href="{% url 'rewards:referrals' %}"><i class="bi bi-diagram-3"></i> Referrals</a>
+      <a href="{% url 'rewards:spin' %}"><i class="bi bi-stars"></i> Spin</a>
+      <a href="{% url 'withdraw' %}"><i class="bi bi-cash-stack"></i> Wallet</a>
+      <a href="{% url 'rewards:advertiser_panel' %}"><i class="bi bi-megaphone"></i> Advertise</a>
+      {% if user.is_staff %}
+        <a href="{% url 'rewards:analytics_dashboard' %}"><i class="bi bi-bar-chart-line"></i> Analytics</a>
+      {% endif %}
+    </nav>
+
+    <p class="dash-menu-label">General</p>
+    <nav class="dash-side-nav">
+      <a href="{% url 'rewards:legal' 'earning-rules' %}"><i class="bi bi-shield-check"></i> Rules</a>
+      <a href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </nav>
+
+    <div class="dash-mobile-card">
+      <i class="bi bi-phone"></i>
+      <strong>InvestHub PWA</strong>
+      <span>Install and track earnings anywhere.</span>
+      <a href="{% url 'rewards:tasks' %}">Start earning</a>
+    </div>
+  </aside>
+
+  <section class="dash-main">
+    <div class="dash-topbar">
+      <div class="dash-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search tasks, plans, referrals" aria-label="Search dashboard">
+        <kbd>⌘ F</kbd>
+      </div>
+      <div class="dash-user-actions">
+        <a href="{% url 'withdraw' %}" aria-label="Wallet"><i class="bi bi-wallet2"></i></a>
+        <a href="{% url 'rewards:tasks' %}" aria-label="Notifications"><i class="bi bi-bell"></i></a>
+        <div class="dash-profile">
+          <span>{{ request.user.username|slice:":1"|upper }}</span>
+          <div>
+            <strong>{{ request.user.username }}</strong>
+            <small>{{ request.user.phone_number|default:"InvestHub member" }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-heading">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Plan, prioritize, and grow your earnings with clarity.</p>
+      </div>
+      <div class="dash-heading-actions">
+        <a href="{% url 'plans:plans' %}" class="dash-primary-btn"><i class="bi bi-plus-lg"></i> Add Plan</a>
+        <a href="{% url 'withdraw' %}" class="dash-outline-btn">Withdraw</a>
+      </div>
+    </div>
+
+    <div class="dash-stats-grid">
+      <div class="dash-stat-card primary">
+        <a href="{% url 'withdraw' %}"><i class="bi bi-arrow-up-right"></i></a>
+        <span>Total Balance</span>
+        <strong>Rs. {{ wallet.balance|floatformat:0 }}</strong>
+        <small><i class="bi bi-graph-up-arrow"></i> Wallet available</small>
+      </div>
+      <div class="dash-stat-card">
+        <a href="{% url 'rewards:tasks' %}"><i class="bi bi-arrow-up-right"></i></a>
+        <span>Daily Earnings</span>
+        <strong>Rs. {{ daily_earnings|default:"0" }}</strong>
+        <small><i class="bi bi-graph-up-arrow"></i> From active plans</small>
+      </div>
+      <div class="dash-stat-card">
+        <a href="{% url 'plans:plans' %}"><i class="bi bi-arrow-up-right"></i></a>
+        <span>Active Plans</span>
+        <strong>{{ active_plans_count|default:"0" }}</strong>
+        <small><i class="bi bi-check2-circle"></i> Total {{ total_plans_count|default:"0" }} plans</small>
+      </div>
+      <div class="dash-stat-card">
+        <a href="{% url 'plans:plans' %}"><i class="bi bi-arrow-up-right"></i></a>
+        <span>Total Invested</span>
+        <strong>Rs. {{ total_invested|default:"0" }}</strong>
+        <small>All time invested</small>
+      </div>
+    </div>
+
+    <div class="dash-content-grid">
+      <div class="dash-panel analytics">
+        <div class="dash-panel-head">
+          <h3>Investment Analytics</h3>
+          <span>This week</span>
+        </div>
+        <div class="dash-bars">
+          <div class="hatched" style="height: 58%"><span>S</span></div>
+          <div style="height: 76%"><span>M</span></div>
+          <div class="highlight" style="height: 63%"><b>{{ progress_percentage|default:"41" }}%</b><span>T</span></div>
+          <div style="height: 88%"><span>W</span></div>
+          <div class="hatched" style="height: 72%"><span>T</span></div>
+          <div style="height: 52%"><span>F</span></div>
+          <div class="hatched" style="height: 80%"><span>S</span></div>
+        </div>
+      </div>
+
+      <div class="dash-panel reminder">
+        <div class="dash-panel-head"><h3>Reminders</h3></div>
+        <h4>{% if user_plan %}{{ user_plan.plan.name }} plan active{% else %}Activate your first plan{% endif %}</h4>
+        <p>{% if user_plan %}Days left: {{ user_plan.days_left }}{% else %}Start earning by choosing a plan.{% endif %}</p>
+        <a href="{% url 'plans:plans' %}" class="dash-primary-btn"><i class="bi bi-rocket-takeoff"></i> Manage Plan</a>
+      </div>
+
+      <div class="dash-panel project-list">
+        <div class="dash-panel-head">
+          <h3>Your Plans</h3>
+          <a href="{% url 'plans:plans' %}">+ New</a>
+        </div>
+        {% for plan in plans|slice:":5" %}
+          <div class="dash-project-item">
+            <i class="bi bi-gem"></i>
+            <div>
+              <strong>{{ plan.plan.name }}</strong>
+              <span>Daily Rs. {{ plan.plan.daily_earning }} · {{ plan.plan.duration_days }} days</span>
+            </div>
+          </div>
+        {% empty %}
+          <div class="dash-project-item">
+            <i class="bi bi-plus-circle"></i>
+            <div>
+              <strong>No plan yet</strong>
+              <span>Browse plans to begin.</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="dash-panel collaboration">
+        <div class="dash-panel-head">
+          <h3>Recent Activity</h3>
+          <a href="{% url 'rewards:tasks' %}">Open tasks</a>
+        </div>
+        <div class="dash-activity-row">
+          <span class="avatar green">B</span>
+          <div><strong>Balance ready</strong><small>Wallet: Rs. {{ wallet.balance|floatformat:2 }}</small></div>
+          <em>Live</em>
+        </div>
+        <div class="dash-activity-row">
+          <span class="avatar yellow">P</span>
+          <div><strong>Plans tracked</strong><small>{{ total_plans_count|default:"0" }} total plans in account</small></div>
+          <em>Updated</em>
+        </div>
+        <div class="dash-activity-row">
+          <span class="avatar blue">R</span>
+          <div><strong>Referral system</strong><small>Invite links and commissions available</small></div>
+          <em>Ready</em>
+        </div>
+        <div class="dash-activity-row">
+          <span class="avatar pink">W</span>
+          <div><strong>Withdrawal OTP</strong><small>Secure request flow enabled</small></div>
+          <em>Secure</em>
+        </div>
+      </div>
+
+      <div class="dash-panel progress-panel">
+        <div class="dash-panel-head"><h3>Plan Progress</h3></div>
+        <div class="dash-ring" style="--value: {{ progress_percentage|default:'41' }}%">
+          <strong>{{ progress_percentage|default:"41" }}%</strong>
+          <span>{% if user_plan %}Plan elapsed{% else %}Ready{% endif %}</span>
+        </div>
+        <div class="dash-ring-legend">
+          <span><b></b> Completed</span>
+          <span><b></b> In Progress</span>
+          <span><b></b> Pending</span>
+        </div>
+      </div>
+
+      <div class="dash-panel time-card">
+        <h3>Quick Links</h3>
+        <strong>01:24:08</strong>
+        <div>
+          <a href="{% url 'rewards:tasks' %}"><i class="bi bi-play-fill"></i></a>
+          <a href="{% url 'withdraw' %}"><i class="bi bi-stop-fill"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register | Join InvestHub{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block hero %}
+<section class="app-page-hero auth-hero" style="background-image: linear-gradient(135deg, rgba(30, 67, 86, 0.94), rgba(104, 164, 196, 0.72)), url('{% static 'investhub/investhub-hero.jpg' %}');">
+  <div class="container">
+    <span class="hero-kicker"><i class="bi bi-person-plus"></i> New Member</span>
+    <h1 class="mb-3">Create Your InvestHub Account</h1>
+    <p class="mb-0">Join with your username and phone number, then manage earning plans, tasks, referrals, and withdrawals.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center g-4 align-items-stretch auth-shell">
+    <div class="col-lg-5 col-xl-4">
+      <div class="card auth-panel h-100">
+        <div class="card-body p-4 p-lg-5">
+          <div class="auth-icon mb-4"><i class="bi bi-person-add"></i></div>
+          <h3 class="mb-2">Create Account</h3>
+          <p class="text-muted mb-4">Start with a secure InvestHub profile.</p>
+
+          <form method="post" class="custom-form" id="registerForm">
+            {% csrf_token %}
+            <input type="hidden" name="ref_code" value="{{ ref_code }}">
+
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-at"></i></span>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Choose a username" value="{{ form_data.username|default:'' }}" required>
+              </div>
+              <div class="form-text">Letters, numbers, and underscores work best.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="phone_number" class="form-label">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                <input type="tel" id="phone_number" name="phone_number" class="form-control" placeholder="03XXXXXXXXX" value="{{ form_data.phone_number|default:'' }}" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password1" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input type="password" id="password1" name="password1" class="form-control" placeholder="Create password" required>
+                <button class="btn btn-outline-secondary auth-toggle" type="button" data-password-toggle="password1" aria-label="Show password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+              <div class="password-meter mt-2">
+                <span id="passwordStrengthBar"></span>
+              </div>
+              <div class="form-text d-flex justify-content-between">
+                <span id="passwordStrengthText">Minimum 6 characters</span>
+                <span id="passwordLength">0 chars</span>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="password2" class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm password" required>
+                <button class="btn btn-outline-secondary auth-toggle" type="button" data-password-toggle="password2" aria-label="Show password">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+              <div class="form-text" id="passwordMatchText">Re-enter your password to confirm.</div>
+            </div>
+
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="terms" required>
+              <label class="form-check-label" for="terms">
+                I agree to the <a href="{% url 'rewards:legal' 'terms' %}">Terms</a> and <a href="{% url 'rewards:legal' 'privacy' %}">Privacy Policy</a>.
+              </label>
+            </div>
+
+            <button type="submit" class="btn custom-btn w-100 py-3" id="registerBtn">Create Account</button>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="mb-0">Already have an account? <a href="{% url 'login' %}"><strong>Sign in</strong></a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-xl-5">
+      <div class="auth-feature h-100">
+        <div>
+          <span class="auth-feature-kicker">Reward ecosystem</span>
+          <h3>Build trust from day one with clear earning rules and secure withdrawals.</h3>
+        </div>
+        <div class="auth-benefit-list">
+          <div><i class="bi bi-check-circle"></i><span>Daily tasks, login bonus, surveys, and offerwall-ready structure</span></div>
+          <div><i class="bi bi-check-circle"></i><span>Referral dashboard with level commission support</span></div>
+          <div><i class="bi bi-check-circle"></i><span>Wallet, OTP withdrawal flow, and payment history</span></div>
+          <div><i class="bi bi-check-circle"></i><span>Fraud signals for timers, duplicate devices, and suspicious activity</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const password1 = document.getElementById('password1');
+  const password2 = document.getElementById('password2');
+  const strengthBar = document.getElementById('passwordStrengthBar');
+  const strengthText = document.getElementById('passwordStrengthText');
+  const passwordLength = document.getElementById('passwordLength');
+  const matchText = document.getElementById('passwordMatchText');
+  const phoneInput = document.getElementById('phone_number');
+
+  document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const input = document.getElementById(this.dataset.passwordToggle);
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      this.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+  });
+
+  function updatePasswordState() {
+    const value = password1.value;
+    const score = Math.min(100, value.length * 12);
+    strengthBar.style.width = score + '%';
+    passwordLength.textContent = value.length + ' chars';
+
+    if (value.length === 0) {
+      strengthBar.className = '';
+      strengthText.textContent = 'Minimum 6 characters';
+    } else if (value.length < 6) {
+      strengthBar.className = 'weak';
+      strengthText.textContent = 'Too short';
+    } else if (value.length < 8) {
+      strengthBar.className = 'medium';
+      strengthText.textContent = 'Good enough';
+    } else {
+      strengthBar.className = 'strong';
+      strengthText.textContent = 'Strong password';
+    }
+
+    if (password2.value) {
+      if (password1.value === password2.value) {
+        matchText.textContent = 'Passwords match';
+        matchText.className = 'form-text text-success';
+      } else {
+        matchText.textContent = 'Passwords do not match';
+        matchText.className = 'form-text text-danger';
+      }
+    }
+  }
+
+  password1.addEventListener('input', updatePasswordState);
+  password2.addEventListener('input', updatePasswordState);
+
+  phoneInput.addEventListener('input', function () {
+    this.value = this.value.replace(/[^\d+]/g, '').slice(0, 15);
+  });
+});
+</script>
+{% endblock %}
