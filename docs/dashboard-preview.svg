@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="850" viewBox="0 0 1600 850" role="img" aria-label="InvestHub dashboard preview">
+  <defs>
+    <linearGradient id="side" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#1e4356"/>
+      <stop offset="1" stop-color="#18354a"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1">
+      <stop offset="0" stop-color="#1e4356"/>
+      <stop offset="1" stop-color="#13bfd2"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#1e4356" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="850" fill="#eef5f8"/>
+  <rect x="0" y="0" width="265" height="850" fill="url(#side)"/>
+  <g transform="translate(45 36)">
+    <rect width="48" height="48" rx="14" fill="#68a4c4"/>
+    <path d="M13 34h24M16 30l7-7 7 5 9-15" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="38" cy="13" r="4" fill="#fff"/>
+    <text x="68" y="29" font-family="Poppins, Arial" font-size="28" font-weight="800" fill="#fff">Invest <tspan fill="#8fd7ea">Hub</tspan></text>
+    <text x="69" y="48" font-family="Poppins, Arial" font-size="11" font-weight="700" letter-spacing="4" fill="#fff">SMART EARNINGS</text>
+  </g>
+  <g font-family="Poppins, Arial" font-size="17" font-weight="800" fill="#c7d8df">
+    <text x="45" y="162" font-size="13" fill="#a8c1cc">MENU</text>
+    <rect x="32" y="178" width="210" height="52" rx="15" fill="#365f75"/>
+    <text x="76" y="211" fill="#fff">Dashboard</text>
+    <text x="76" y="267">Tasks</text>
+    <text x="76" y="323">Plans</text>
+    <text x="76" y="379">Referrals</text>
+    <text x="76" y="435">Spin</text>
+    <text x="76" y="491">Wallet</text>
+    <text x="76" y="547">Advertise</text>
+    <text x="45" y="608" font-size="13" fill="#a8c1cc">GENERAL</text>
+    <text x="76" y="659">Rules</text>
+    <text x="76" y="715">Logout</text>
+  </g>
+  <g transform="translate(300 52)" filter="url(#shadow)">
+    <rect width="1260" height="96" rx="24" fill="#fff" stroke="#d9edf5"/>
+    <rect x="32" y="26" width="390" height="48" rx="24" fill="#f4fafc"/>
+    <text x="72" y="58" font-family="Poppins, Arial" font-size="17" fill="#8aa2ae">Search tasks, plans, referrals</text>
+    <circle cx="1144" cy="48" r="24" fill="#e8f7fa"/>
+    <circle cx="1198" cy="48" r="24" fill="#e8f7fa"/>
+    <circle cx="1250" cy="48" r="28" fill="#45b9d0"/>
+    <text x="1242" y="57" font-family="Poppins, Arial" font-size="20" font-weight="900" fill="#fff">J</text>
+  </g>
+  <text x="316" y="248" font-family="Poppins, Arial" font-size="54" font-weight="800" fill="#1e4356">Dashboard</text>
+  <text x="318" y="286" font-family="Poppins, Arial" font-size="18" fill="#6f8490">Plan, prioritize, and grow your earnings with clarity.</text>
+  <rect x="1298" y="212" width="138" height="54" rx="27" fill="#13bfd2"/>
+  <text x="1340" y="247" font-family="Poppins, Arial" font-size="17" font-weight="800" fill="#fff">Add Plan</text>
+  <rect x="1450" y="212" width="112" height="54" rx="27" fill="#fff" stroke="#13bfd2"/>
+  <text x="1474" y="247" font-family="Poppins, Arial" font-size="17" font-weight="800" fill="#1e4356">Withdraw</text>
+  <g transform="translate(300 310)" filter="url(#shadow)" font-family="Poppins, Arial">
+    <rect width="315" height="160" rx="20" fill="url(#card)"/>
+    <text x="26" y="44" font-size="17" font-weight="800" fill="#fff">Total Balance</text>
+    <text x="26" y="104" font-size="46" font-weight="900" fill="#fff">Rs. 0</text>
+    <text x="26" y="138" font-size="15" font-weight="800" fill="#fff">Wallet available</text>
+    <rect x="340" width="315" height="160" rx="20" fill="#fff" stroke="#d9edf5"/>
+    <text x="366" y="44" font-size="17" font-weight="800" fill="#1e4356">Daily Earnings</text>
+    <text x="366" y="104" font-size="46" font-weight="900" fill="#1e4356">Rs. 0</text>
+    <text x="366" y="138" font-size="15" font-weight="800" fill="#13aebf">From active plans</text>
+    <rect x="680" width="315" height="160" rx="20" fill="#fff" stroke="#d9edf5"/>
+    <text x="706" y="44" font-size="17" font-weight="800" fill="#1e4356">Active Plans</text>
+    <text x="706" y="104" font-size="46" font-weight="900" fill="#1e4356">0</text>
+    <text x="706" y="138" font-size="15" font-weight="800" fill="#13aebf">Total 0 plans</text>
+    <rect x="1020" width="315" height="160" rx="20" fill="#fff" stroke="#d9edf5"/>
+    <text x="1046" y="44" font-size="17" font-weight="800" fill="#1e4356">Total Invested</text>
+    <text x="1046" y="104" font-size="46" font-weight="900" fill="#1e4356">Rs. 0</text>
+    <text x="1046" y="138" font-size="15" font-weight="800" fill="#13aebf">All time invested</text>
+  </g>
+  <g transform="translate(300 492)" filter="url(#shadow)" font-family="Poppins, Arial">
+    <rect width="920" height="270" rx="20" fill="#fff" stroke="#d9edf5"/>
+    <text x="26" y="48" font-size="23" font-weight="800" fill="#1e4356">Investment Analytics</text>
+    <text x="828" y="48" font-size="17" font-weight="800" fill="#13aebf">This week</text>
+    <g transform="translate(40 110)">
+      <rect x="0" y="65" width="65" height="80" rx="32" fill="#b6e8f6"/>
+      <rect x="140" y="30" width="65" height="115" rx="32" fill="#0791c8"/>
+      <rect x="280" y="55" width="65" height="90" rx="32" fill="#20d6c0"/>
+      <rect x="420" y="10" width="65" height="135" rx="32" fill="#13bfd2"/>
+      <rect x="560" y="45" width="65" height="100" rx="32" fill="#b6e8f6"/>
+      <rect x="700" y="70" width="65" height="75" rx="32" fill="#0791c8"/>
+      <rect x="820" y="35" width="65" height="110" rx="32" fill="#b6e8f6"/>
+    </g>
+    <rect x="940" width="365" height="270" rx="20" fill="#fff" stroke="#d9edf5"/>
+    <text x="968" y="48" font-size="23" font-weight="800" fill="#1e4356">Reminders</text>
+    <text x="968" y="102" font-size="28" fill="#1e4356">Activate your first plan</text>
+    <text x="968" y="138" font-size="17" fill="#6f8490">Start earning by choosing a plan.</text>
+    <rect x="968" y="170" width="160" height="54" rx="27" fill="#13bfd2"/>
+    <text x="1014" y="204" font-size="17" font-weight="800" fill="#fff">Manage Plan</text>
+  </g>
+</svg>
